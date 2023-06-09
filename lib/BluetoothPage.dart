@@ -12,7 +12,7 @@ class BluetoothPage extends StatefulWidget {
 class _BluetoothPageState extends State<BluetoothPage> {
   BluetoothDevice? device;
   BluetoothCharacteristic? characteristic;
-  StreamSubscription<List<int>>? subscription;
+  StreamSubscription? subscription;
 
   @override
   void initState() {
@@ -31,9 +31,10 @@ class _BluetoothPageState extends State<BluetoothPage> {
 
       List<BluetoothService> services = await device!.discoverServices();
       services.forEach((service) {
-        if (service.uuid.toString() == 'your_service_uuid') {
+        if (service.uuid.toString() == 'f8a53b62-34b7-4bbf-884f-179c2d8b8495') {
           service.characteristics.forEach((characteristic) {
-            if (characteristic.uuid.toString() == 'your_characteristic_uuid') {
+            if (characteristic.uuid.toString() ==
+                'c9db152e-9f0b-437d-97e9-8ad362191d7b') {
               this.characteristic = characteristic;
               setState(() {});
             }
