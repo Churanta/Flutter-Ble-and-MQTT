@@ -3,6 +3,10 @@
         android:label="heat_pump"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <uses-permission android:name="android.permission.BLUETOOTH" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+<uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
