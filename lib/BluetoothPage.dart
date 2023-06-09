@@ -123,13 +123,17 @@ class _BluetoothPageState extends State<BluetoothPage> {
                       value: value,
                       child: Text(
                         value,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.white, // Set text color to white
+                        ),
                       ),
                     );
                   }).toList(),
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white, // Set dropdown text color to white
+                  ),
                   dropdownColor:
-                      Colors.black, // Set dropdown menu color to black
+                      Colors.black, // Set dropdown background color to black
                 ),
                 SizedBox(height: 16.0),
                 TextField(
