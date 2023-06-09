@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart' as mqtt;
+import 'package:lottie/lottie.dart';
 
 class MQTTPage extends StatefulWidget {
   @override
@@ -52,15 +53,64 @@ class _MQTTPageState extends State<MQTTPage> {
     client?.publishMessage(topic, mqtt.MqttQos.exactlyOnce, builder.payload!);
   }
 
+  void _showPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              gradient: LinearGradient(
+                colors: [Colors.blue, Colors.purple],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Lottie.asset(
+                  'assets/tick.json',
+                  width: 100,
+                  height: 100,
+                ),
+                const SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10.0),
+                        bottomRight: Radius.circular(10.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MQTT Demo'),
+        title: const Text('MQTT Demo'),
         backgroundColor: Colors.black,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -75,7 +125,7 @@ class _MQTTPageState extends State<MQTTPage> {
             children: <Widget>[
               Row(
                 children: [
-                  Text(
+                  const Text(
                     'Choose Fruit:',
                     style: TextStyle(
                       color: Colors.white,
@@ -100,20 +150,20 @@ class _MQTTPageState extends State<MQTTPage> {
                         value: value,
                         child: Text(
                           value,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                           ),
                         ),
                       );
                     }).toList(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                     ),
                     dropdownColor: Colors.black,
                   ),
                 ],
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextField(
                 controller: _temperatureController,
                 style: TextStyle(color: Colors.white),
@@ -128,7 +178,7 @@ class _MQTTPageState extends State<MQTTPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextField(
                 controller: _humidityController,
                 style: TextStyle(color: Colors.white),
@@ -143,7 +193,7 @@ class _MQTTPageState extends State<MQTTPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               GestureDetector(
                 onTap: () {
                   String temperature = _temperatureController.text;
@@ -151,6 +201,7 @@ class _MQTTPageState extends State<MQTTPage> {
                   String message =
                       'Fruit: $selectedFruit, Temperature: $temperature, Humidity: $humidity';
                   _publishMessage('topic', message);
+                  _showPopup(context);
                 },
                 child: Container(
                   height: 48.0,

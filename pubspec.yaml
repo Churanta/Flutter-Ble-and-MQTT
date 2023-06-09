@@ -47,6 +47,7 @@ dependencies:
   flutter_blue: ^0.8.0
   lottie: ^2.4.0
   flutter_bluetooth_serial: ^0.4.0
+  flutter_dialogs: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +80,7 @@ flutter:
     - assets/p3.png
     - assets/gif/splash.gif
     - assets/splash_animation.json
+    - assets/tick.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
