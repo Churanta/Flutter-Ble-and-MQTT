@@ -1,5 +1,3 @@
-//update password
-
 import 'package:flutter/material.dart';
 import 'package:heat_pump/services/auth.dart';
 
@@ -25,6 +23,7 @@ class _MyPasswordState extends State<MyPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Container(
         margin: const EdgeInsets.only(left: 25, right: 25),
         alignment: Alignment.center,
@@ -42,7 +41,11 @@ class _MyPasswordState extends State<MyPassword> {
               ),
               const Text(
                 "Setup Password",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(
                 height: 10,
@@ -51,6 +54,7 @@ class _MyPasswordState extends State<MyPassword> {
                 "Create a New Password for your account",
                 style: TextStyle(
                   fontSize: 16,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -60,8 +64,10 @@ class _MyPasswordState extends State<MyPassword> {
               Container(
                 height: 45,
                 decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[800],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -72,15 +78,18 @@ class _MyPasswordState extends State<MyPassword> {
                       width: 10,
                     ),
                     Expanded(
-                        child: TextField(
-                      onChanged: (value) {
-                        old_pass = value;
-                      },
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Old Password",
+                      child: TextField(
+                        onChanged: (value) {
+                          old_pass = value;
+                        },
+                        style: TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Old Password",
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
                       ),
-                    ))
+                    ),
                   ],
                 ),
               ),
@@ -90,8 +99,10 @@ class _MyPasswordState extends State<MyPassword> {
               Container(
                 height: 45,
                 decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[800],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -102,15 +113,18 @@ class _MyPasswordState extends State<MyPassword> {
                       width: 10,
                     ),
                     Expanded(
-                        child: TextField(
-                      onChanged: (value) {
-                        new_password = value;
-                      },
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "New Password",
+                      child: TextField(
+                        onChanged: (value) {
+                          new_password = value;
+                        },
+                        style: TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "New Password",
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
                       ),
-                    ))
+                    ),
                   ],
                 ),
               ),
@@ -120,8 +134,10 @@ class _MyPasswordState extends State<MyPassword> {
               Container(
                 height: 45,
                 decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[800],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -132,15 +148,18 @@ class _MyPasswordState extends State<MyPassword> {
                       width: 10,
                     ),
                     Expanded(
-                        child: TextField(
-                      onChanged: (value) {
-                        confirm_password = value;
-                      },
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Confirm Password",
+                      child: TextField(
+                        onChanged: (value) {
+                          confirm_password = value;
+                        },
+                        style: TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Confirm Password",
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
                       ),
-                    ))
+                    ),
                   ],
                 ),
               ),
@@ -151,18 +170,32 @@ class _MyPasswordState extends State<MyPassword> {
                 width: double.infinity,
                 height: 45,
                 child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 55, 239, 249),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: () async {
-                      if (await password(
-                          old_pass, new_password, confirm_password, context))
-                        Navigator.pushNamed(context, 'login');
-                    },
-                    child: const Text("Done")),
-              )
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 55, 239, 249),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (await password(
+                      old_pass,
+                      new_password,
+                      confirm_password,
+                      context,
+                    )) {
+                      Navigator.pushNamed(context, 'login');
+                    }
+                  },
+                  child: const Text(
+                    "Done",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

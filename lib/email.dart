@@ -24,6 +24,7 @@ class _MyEmailState extends State<MyEmail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Container(
         margin: const EdgeInsets.only(left: 25, right: 25),
         alignment: Alignment.center,
@@ -41,26 +42,25 @@ class _MyEmailState extends State<MyEmail> {
               ),
               const Text(
                 "Email Verification",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(
                 height: 10,
               ),
-              // const Text(
-              //   "We need to register your Email before getting started!",
-              //   style: TextStyle(
-              //     fontSize: 16,
-              //   ),
-              //   textAlign: TextAlign.center,
-              // ),
               const SizedBox(
                 height: 30,
               ),
               Container(
                 height: 55,
                 decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[800],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -73,9 +73,11 @@ class _MyEmailState extends State<MyEmail> {
                     Expanded(
                       child: TextField(
                         controller: emailController,
+                        style: TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: "Enter your email",
+                          hintStyle: TextStyle(color: Colors.grey),
                         ),
                       ),
                     ),
@@ -88,8 +90,10 @@ class _MyEmailState extends State<MyEmail> {
               Container(
                 height: 55,
                 decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[800],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -99,9 +103,11 @@ class _MyEmailState extends State<MyEmail> {
                     Expanded(
                       child: TextField(
                         controller: passwordController,
+                        style: TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: "Enter New Password",
+                          hintStyle: TextStyle(color: Colors.grey),
                         ),
                       ),
                     ),
@@ -111,17 +117,16 @@ class _MyEmailState extends State<MyEmail> {
               const SizedBox(
                 height: 20,
               ),
-
               const Text(
                 "Enter OTP",
                 style: TextStyle(
                   fontSize: 16,
+                  color: Colors.white,
                 ),
               ),
               const SizedBox(
                 height: 20,
               ),
-
               //-----------------------
               //otp
               //----------------------
@@ -129,8 +134,6 @@ class _MyEmailState extends State<MyEmail> {
                 keyboardType: TextInputType.phone,
                 length: 6,
                 showCursor: true,
-                // ignore: avoid_print
-                // onCompleted: (otp) => print(otp),
                 onChanged: (value) {
                   otp = value;
                 },
@@ -138,7 +141,6 @@ class _MyEmailState extends State<MyEmail> {
               const SizedBox(
                 height: 20,
               ),
-
               const SizedBox(
                 width: 30,
               ),
@@ -146,22 +148,33 @@ class _MyEmailState extends State<MyEmail> {
                 width: double.infinity,
                 height: 45,
                 child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 55, 239, 249),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: () async {
-                      if (await verify_otp(emailController.text, otp,
-                          passwordController.text, context)) {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => MyLogin()),
-                            (route) => false);
-                      }
-                    },
-                    child: const Text("Login")),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 55, 239, 249),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (await verify_otp(emailController.text, otp,
+                        passwordController.text, context)) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => MyLogin(),
+                        ),
+                        (route) => false,
+                      );
+                    }
+                  },
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
