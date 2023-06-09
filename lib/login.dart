@@ -24,6 +24,7 @@ class _MyLoginState extends State<MyLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Container(
         margin: const EdgeInsets.only(left: 25, right: 25),
         alignment: Alignment.center,
@@ -40,16 +41,21 @@ class _MyLoginState extends State<MyLogin> {
                 height: 25,
               ),
               const Text(
-                "Wealcome To HeatPump",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                "Welcome To HeatPump",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(
                 height: 10,
               ),
               const Text(
-                "Login To your account",
+                "Login To Your Account",
                 style: TextStyle(
                   fontSize: 16,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -59,8 +65,10 @@ class _MyLoginState extends State<MyLogin> {
               Container(
                 height: 45,
                 decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[800],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -71,15 +79,18 @@ class _MyLoginState extends State<MyLogin> {
                       width: 10,
                     ),
                     Expanded(
-                        child: TextField(
-                      onChanged: (value) {
-                        email = value;
-                      },
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Email",
+                      child: TextField(
+                        onChanged: (value) {
+                          email = value;
+                        },
+                        style: TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Email",
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
                       ),
-                    ))
+                    ),
                   ],
                 ),
               ),
@@ -89,8 +100,10 @@ class _MyLoginState extends State<MyLogin> {
               Container(
                 height: 45,
                 decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[800],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -101,15 +114,18 @@ class _MyLoginState extends State<MyLogin> {
                       width: 10,
                     ),
                     Expanded(
-                        child: TextField(
-                      onChanged: (value) {
-                        password = value;
-                      },
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Password",
+                      child: TextField(
+                        onChanged: (value) {
+                          password = value;
+                        },
+                        style: TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Password",
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
                       ),
-                    ))
+                    ),
                   ],
                 ),
               ),
@@ -120,30 +136,35 @@ class _MyLoginState extends State<MyLogin> {
                 width: double.infinity,
                 height: 45,
                 child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 55, 239, 249),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: () async {
-                      if (await login(email, password, context))
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MainPage()));
-                    },
-                    // onPressed: () async {
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const MainPage()),
-                    //   );
-                    // },
-                    child: const Text("Login")),
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color.fromARGB(255, 55, 239, 249),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (await login(email, password, context)) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainPage(),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
               ),
               TextButton(
                 style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 15),
+                  textStyle: const TextStyle(fontSize: 15, color: Colors.grey),
                 ),
                 onPressed: () {
                   Navigator.push(

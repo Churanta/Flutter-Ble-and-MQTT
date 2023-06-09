@@ -7,7 +7,8 @@ class MQTTPage extends StatefulWidget {
 }
 
 class _MQTTPageState extends State<MQTTPage> {
-  final TextEditingController _messageController = TextEditingController();
+  final TextEditingController _temperatureController = TextEditingController();
+  final TextEditingController _humidityController = TextEditingController();
   mqtt.MqttClient? client;
   String selectedFruit = 'Apple';
 
@@ -72,37 +73,49 @@ class _MQTTPageState extends State<MQTTPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              DropdownButton<String>(
-                value: selectedFruit,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedFruit = newValue!;
-                  });
-                },
-                items: <String>[
-                  'Apple',
-                  'Guava',
-                  'Chilli',
-                  'Grapes',
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+              Row(
+                children: [
+                  Text(
+                    'Choose Fruit:',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
                     ),
-                  );
-                }).toList(),
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-                dropdownColor: Colors.black,
+                  ),
+                  SizedBox(width: 8.0),
+                  DropdownButton<String>(
+                    value: selectedFruit,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedFruit = newValue!;
+                      });
+                    },
+                    items: <String>[
+                      'Apple',
+                      'Guava',
+                      'Chilli',
+                      'Grapes',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    dropdownColor: Colors.black,
+                  ),
+                ],
               ),
               SizedBox(height: 16.0),
               TextField(
-                controller: _messageController,
+                controller: _temperatureController,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: 'Enter Desired Temperature:',
@@ -117,7 +130,7 @@ class _MQTTPageState extends State<MQTTPage> {
               ),
               SizedBox(height: 16.0),
               TextField(
-                controller: _messageController,
+                controller: _humidityController,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: 'Enter Desired Humidity:',
@@ -131,19 +144,16 @@ class _MQTTPageState extends State<MQTTPage> {
                 ),
               ),
               SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  String message = _messageController.text;
+              GestureDetector(
+                onTap: () {
+                  String temperature = _temperatureController.text;
+                  String humidity = _humidityController.text;
+                  String message =
+                      'Fruit: $selectedFruit, Temperature: $temperature, Humidity: $humidity';
                   _publishMessage('topic', message);
                 },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  padding: EdgeInsets.zero, // Remove default padding
-                ),
                 child: Container(
-                  height: 48.0, // Set the desired height for the button
+                  height: 48.0,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [Colors.blue, Colors.purple],
@@ -154,7 +164,7 @@ class _MQTTPageState extends State<MQTTPage> {
                   ),
                   child: Center(
                     child: Text(
-                      'Publish',
+                      'Submit',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.0,
