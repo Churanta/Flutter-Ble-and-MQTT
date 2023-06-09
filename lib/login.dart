@@ -15,6 +15,7 @@ class _MyLoginState extends State<MyLogin> {
 
   var email = "";
   var password = "";
+  bool obscurePassword = true;
 
   @override
   void initState() {
@@ -118,11 +119,25 @@ class _MyLoginState extends State<MyLogin> {
                         onChanged: (value) {
                           password = value;
                         },
+                        obscureText: obscurePassword,
                         style: TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Password",
                           hintStyle: TextStyle(color: Colors.grey),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obscurePassword = !obscurePassword;
+                              });
+                            },
+                            icon: Icon(
+                              obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
                       ),
                     ),
