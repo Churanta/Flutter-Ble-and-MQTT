@@ -1,5 +1,8 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 class BluetoothPage extends StatefulWidget {
   @override
@@ -7,50 +10,58 @@ class BluetoothPage extends StatefulWidget {
 }
 
 class _BluetoothPageState extends State<BluetoothPage> {
-  BluetoothConnection? connection;
-  bool isConnecting = true;
-  bool isConnected = false;
+  BluetoothDevice? device;
+  BluetoothCharacteristic? characteristic;
+  StreamSubscription<List<int>>? subscription;
 
   @override
   void initState() {
     super.initState();
-    connectToDevice('ESP32'); // Pass the device name as a parameter
+    connectToDevice();
   }
 
-  void connectToDevice(String deviceName) async {
-    try {
-      List<BluetoothDevice> devices =
-          await FlutterBluetoothSerial.instance.getBondedDevices();
-      BluetoothDevice? device =
-          devices.firstWhere((d) => d.name == deviceName, orElse: () => null);
-      if (device == null) {
-        print('Device not found');
-        return;
-      }
-      BluetoothConnection newConnection =
-          await BluetoothConnection.toAddress(device.address);
-      print('Connected to device');
-      setState(() {
-        connection = newConnection;
-        isConnecting = false;
-        isConnected = true;
+  void connectToDevice() async {
+    device = await FlutterBlue.instance
+        .scan(timeout: Duration(seconds: 4))
+        .firstWhere((scanResult) => scanResult.device.name == 'esp32')
+        .then((scanResult) => scanResult.device);
+
+    if (device != null) {
+      await device!.connect();
+
+      List<BluetoothService> services = await device!.discoverServices();
+      services.forEach((service) {
+        if (service.uuid.toString() == 'your_service_uuid') {
+          service.characteristics.forEach((characteristic) {
+            if (characteristic.uuid.toString() == 'your_characteristic_uuid') {
+              this.characteristic = characteristic;
+              setState(() {});
+            }
+          });
+        }
       });
-    } catch (error) {
-      print('Error connecting to device: $error');
-      setState(() {
-        isConnecting = false;
-        isConnected = false;
+    }
+
+    if (characteristic != null) {
+      subscription = characteristic!.value.listen((value) {
+        String receivedData = utf8.decode(value);
+        print('Received data: $receivedData');
       });
     }
   }
 
   void sendData(String data) {
-    if (connection != null && connection!.isConnected) {
-  connection!.output.add(utf8.encode(data));
-      connection!.output.allSent.then((_) {
-        print('Data sent: $data');
-      });
+    if (characteristic != null) {
+      List<int> bytes = utf8.encode(data);
+      characteristic!.write(Uint8List.fromList(bytes));
     }
+  }
+
+  @override
+  void dispose() {
+    subscription?.cancel();
+    device?.disconnect();
+    super.dispose();
   }
 
   @override
@@ -62,15 +73,23 @@ class _BluetoothPageState extends State<BluetoothPage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              isConnected ? 'Connected' : 'Not Connected',
-              style: TextStyle(fontSize: 24),
+          children: [
+            ElevatedButton(
+              onPressed: () => sendData('Hello, ESP32!'),
+              child: Text('Send Data'),
             ),
             SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: isConnected ? () => sendData('Hello, ESP32!') : null,
-              child: Text('Send Data'),
+            Text('Received Data:'),
+            StreamBuilder<List<int>>(
+              stream: characteristic?.value,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  String receivedData = utf8.decode(snapshot.data!);
+                  return Text(receivedData);
+                } else {
+                  return Text('No Data');
+                }
+              },
             ),
           ],
         ),
