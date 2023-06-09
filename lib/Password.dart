@@ -14,6 +14,7 @@ class _MyPasswordState extends State<MyPassword> {
   var new_password = "";
   var confirm_password = "";
   var old_pass = "";
+  bool obscurePassword = true;
 
   @override
   void initState() {
@@ -117,11 +118,25 @@ class _MyPasswordState extends State<MyPassword> {
                         onChanged: (value) {
                           new_password = value;
                         },
+                        obscureText: obscurePassword,
                         style: TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "New Password",
                           hintStyle: TextStyle(color: Colors.grey),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obscurePassword = !obscurePassword;
+                              });
+                            },
+                            icon: Icon(
+                              obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -152,11 +167,25 @@ class _MyPasswordState extends State<MyPassword> {
                         onChanged: (value) {
                           confirm_password = value;
                         },
+                        obscureText: obscurePassword,
                         style: TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Confirm Password",
                           hintStyle: TextStyle(color: Colors.grey),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obscurePassword = !obscurePassword;
+                              });
+                            },
+                            icon: Icon(
+                              obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
                       ),
                     ),
