@@ -31,10 +31,10 @@ class _BluetoothPageState extends State<BluetoothPage> {
 
       List<BluetoothService> services = await device!.discoverServices();
       services.forEach((service) {
-        if (service.uuid.toString() == 'f8a53b62-34b7-4bbf-884f-179c2d8b8495') {
+        if (service.uuid.toString() == '0000180F-0000-1000-8000-00805F9B34FB') {
           service.characteristics.forEach((characteristic) {
             if (characteristic.uuid.toString() ==
-                'c9db152e-9f0b-437d-97e9-8ad362191d7b') {
+                '00002A19-0000-1000-8000-00805F9B34FB') {
               this.characteristic = characteristic;
               setState(() {});
             }
