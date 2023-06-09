@@ -94,6 +94,12 @@ class _BluetoothPageState extends State<BluetoothPage> {
         backgroundColor: Colors.black,
         centerTitle: true, // Center the app bar title
         title: Text('Bluetooth Page'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Container(
         color: Colors.black, // Set background color to black
@@ -121,6 +127,9 @@ class _BluetoothPageState extends State<BluetoothPage> {
                       ),
                     );
                   }).toList(),
+                  style: TextStyle(color: Colors.white),
+                  dropdownColor:
+                      Colors.black, // Set dropdown menu color to black
                 ),
                 SizedBox(height: 16.0),
                 TextField(
@@ -157,39 +166,30 @@ class _BluetoothPageState extends State<BluetoothPage> {
                   ),
                 ),
                 SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: submitData,
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
+                GestureDetector(
+                  onTap: submitData,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.blue,
+                          Colors.green
+                        ], // Set gradient colors
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                     padding: EdgeInsets.symmetric(vertical: 16.0),
-                    elevation: 5.0,
-                    // Apply gradient background color
-                    // Replace the colors with your desired gradient colors
-                    // You can use any color combination you like
-                    // For example, you can use LinearGradient or RadialGradient
-                    // LinearGradient(
-                    //   colors: [Colors.blue, Colors.green],
-                    // )
-                    // RadialGradient(
-                    //   colors: [Colors.red, Colors.yellow],
-                    // )
-                    // You can also specify the gradient stops and begin/end points
-                    // See the Flutter documentation for more details on gradients
-                    // You may need to import 'package:flutter/painting.dart' to use LinearGradient or RadialGradient
-                    // gradient: LinearGradient(
-                    //   begin: Alignment.topLeft,
-                    //   end: Alignment.bottomRight,
-                    //   colors: [Colors.blue, Colors.green],
-                    // ),
-                  ),
-                  child: Text(
-                    'Submit',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                    child: Center(
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
