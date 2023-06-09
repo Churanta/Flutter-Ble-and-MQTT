@@ -136,12 +136,31 @@ class _MQTTPageState extends State<MQTTPage> {
                   String message = _messageController.text;
                   _publishMessage('topic', message);
                 },
-                child: Text('Publish'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
-                  onPrimary: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  padding: EdgeInsets.zero, // Remove default padding
+                ),
+                child: Container(
+                  height: 48.0, // Set the desired height for the button
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.blue, Colors.purple],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Publish',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),
