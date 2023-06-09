@@ -1,8 +1,4 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 
 class BluetoothPage extends StatefulWidget {
   @override
@@ -10,59 +6,29 @@ class BluetoothPage extends StatefulWidget {
 }
 
 class _BluetoothPageState extends State<BluetoothPage> {
-  BluetoothDevice? device;
-  BluetoothCharacteristic? characteristic;
-  StreamSubscription? subscription;
-
-  @override
-  void initState() {
-    super.initState();
-    connectToDevice();
-  }
-
-  void connectToDevice() async {
-    device = await FlutterBlue.instance
-        .scan(timeout: Duration(seconds: 4))
-        .firstWhere((scanResult) => scanResult.device.name == 'esp32')
-        .then((scanResult) => scanResult.device);
-
-    if (device != null) {
-      await device!.connect();
-
-      List<BluetoothService> services = await device!.discoverServices();
-      services.forEach((service) {
-        if (service.uuid.toString() == '0000180F-0000-1000-8000-00805F9B34FB') {
-          service.characteristics.forEach((characteristic) {
-            if (characteristic.uuid.toString() ==
-                '00002A19-0000-1000-8000-00805F9B34FB') {
-              this.characteristic = characteristic;
-              setState(() {});
-            }
-          });
-        }
-      });
-    }
-
-    if (characteristic != null) {
-      subscription = characteristic!.value.listen((value) {
-        String receivedData = utf8.decode(value);
-        print('Received data: $receivedData');
-      });
-    }
-  }
-
-  void sendData(String data) {
-    if (characteristic != null) {
-      List<int> bytes = utf8.encode(data);
-      characteristic!.write(Uint8List.fromList(bytes));
-    }
-  }
+  String selectedFruit = 'Apple';
+  TextEditingController temperatureController = TextEditingController();
+  TextEditingController humidityController = TextEditingController();
 
   @override
   void dispose() {
-    subscription?.cancel();
-    device?.disconnect();
+    temperatureController.dispose();
+    humidityController.dispose();
     super.dispose();
+  }
+
+  void submitData() {
+    String selectedFruit = this.selectedFruit;
+    String desiredTemperature = temperatureController.text;
+    String desiredHumidity = humidityController.text;
+
+    // Perform further actions with the submitted data
+    // For example, send the data through Bluetooth
+
+    // Print the submitted data for demonstration
+    print('Selected Fruit: $selectedFruit');
+    print('Desired Temperature: $desiredTemperature');
+    print('Desired Humidity: $desiredHumidity');
   }
 
   @override
@@ -71,26 +37,77 @@ class _BluetoothPageState extends State<BluetoothPage> {
       appBar: AppBar(
         title: Text('Bluetooth Page'),
       ),
-      body: Center(
+      body: Container(
+        color: Colors.black, // Set background color to black
+        padding: EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ElevatedButton(
-              onPressed: () => sendData('Hello, ESP32!'),
-              child: Text('Send Data'),
-            ),
-            SizedBox(height: 16),
-            Text('Received Data:'),
-            StreamBuilder<List<int>>(
-              stream: characteristic?.value,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  String receivedData = utf8.decode(snapshot.data!);
-                  return Text(receivedData);
-                } else {
-                  return Text('No Data');
-                }
+            DropdownButton<String>(
+              value: selectedFruit,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedFruit = newValue!;
+                });
               },
+              items: <String>['Apple', 'Guava', 'Chilli', 'Grapes']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
+              }).toList(),
+            ),
+            SizedBox(height: 16.0),
+            TextField(
+              controller: temperatureController,
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'Enter Desired Temperature',
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            TextField(
+              controller: humidityController,
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'Enter Desired Humidity',
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: submitData,
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue, // Set button background color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+              ),
+              child: Text(
+                'Submit',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),
